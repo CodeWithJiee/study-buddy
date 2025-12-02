@@ -1,14 +1,11 @@
 import Link from "next/link";
+import Default from "../templates/Default";
 
 export default function Login() {
-    return (
-        
-        <section>
-            <div>
-                <Link  href="/">Home</Link>
-            </div>
-           <div> Login Page</div>
-        </section>
-        
-    )
+  return (
+
+     <Default>
+          <div>Login Page</div>
+        </Default>
+  );
 }
