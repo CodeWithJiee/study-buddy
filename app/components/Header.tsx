@@ -12,14 +12,14 @@ export default function Header() {
         <div className="flex items-center gap-4">
           <Link
             href="/login"
-            className="px-4 py-2 rounded-md border border-white text-white hover:bg-white hover:text-[#162660] transition-colors"
+            className="font-mono px-4 py-2 rounded-md border border-white text-white hover:bg-[#4EB2C1] hover:text-[#162660] transition-colors"
           >
             Login
           </Link>
 
           <Link
             href="/signup"
-            className="px-4 py-2 rounded-md bg-white text-[#162660] font-semibold hover:bg-gray-100 transition-colors"
+            className="font-mono px-4 py-2 rounded-md bg-[#4EB2C1] text-[#162660] font-semibold hover:bg-gray-100 transition-colors"
           >
             Signup
           </Link>

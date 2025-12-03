@@ -1,33 +1,32 @@
 'use client'
 
 import { useChat } from '@ai-sdk/react'
-import { useState, useRef } from 'react'
-import { UserRound, Bot } from 'lucide-react'
+import { useState, useRef, useEffect } from 'react'
+import { UserRound, Bot, SendHorizontal } from 'lucide-react'
 import ReactMarkdown from 'react-markdown'
 
+
 export default function FormChat() {
-  // AI SDK
+
   const { messages, sendMessage } = useChat({
     onError: (error) => {
       console.log('error: ', error)
       setError(error.toString())
     },
   })
-
-  // States
   const [error, setError] = useState('')
   const [input, setInput] = useState('')
   const [isLoading, setIsLoading] = useState(false)
-
-  // Ref for auto-scrolling
   const messagesEndRef = useRef<HTMLDivElement>(null)
 
-  // Functions
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messages])
+
   function handleKeyDown(e: React.KeyboardEvent<HTMLTextAreaElement>) {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
-
-      // trigger
       const form = e.currentTarget.form
       if (form && input.trim()) {
         form.requestSubmit()
@@ -35,18 +34,14 @@ export default function FormChat() {
     }
   }
 
-  // Handle chat
   async function handleChat(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-
     if (!input) return
-
     try {
       setIsLoading(true)
       await sendMessage({ text: input })
       setInput('')
     } catch (error: any) {
-      console.log('error: ', error)
       setError(error.toString())
     } finally {
       setIsLoading(false)
@@ -54,70 +49,73 @@ export default function FormChat() {
   }
 
   return (
-    <div className="max-w-md w-full mx-auto">
-      {/* Message Display Area */}
-      {messages && messages.length > 0 && (
-        <div className="flex-1 flex flex-col gap-1">
-          {messages.map((message) => (
+   
+    <div className="flex flex-col h-full w-full mx-auto max-w-md">
+      
+ 
+      <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
+        {messages && messages.map((message) => (
             <div
-              data-loading={isLoading}
               key={message.id}
-              className="flex gap-3  p-2"
+              className="flex gap-3"
             >
               {message.role === 'user' ? (
-                <div className="h-10 w-10 aspect-square rounded-full border flex items-center justify-center bg-gray-300">
+                <div className="h-10 w-10 aspect-square rounded-full border flex-none flex items-center justify-center bg-gray-300">
                   <UserRound />
                 </div>
               ) : (
-                <div className="h-10 w-10 aspect-square rounded-full border flex items-center justify-center bg-gray-300">
-                  <Bot />
+                <div className="h-10 w-10 aspect-square rounded-full border flex-none flex items-center justify-center bg-gray-300">
+                  <img 
+                  src="/i-Juander.png" 
+                  alt="AI Logo" 
+                  className="w-full h-full object-cover" 
+                />
                 </div>
               )}
-              {message.parts.map((part, i) => {
-                switch (part.type) {
-                  case 'text':
-                    return (
-                      <div
-                        key={`${message.id}-${i}`}
-                        className="bg-gray-200 flex flex-col items-center p-3 rounded-md"
-                      >
-                        <div className="[&>p]:mb-3 [&>p]:last:mb-0 [&>ul]:mb-4 [&>ul>li]:list-disc [&>ul>li]:ml-5 [&>ol>li]:list-decimal [&>ol>li]:ml-5">
-                          <ReactMarkdown>{part.text}</ReactMarkdown>
-                        </div>
+              
+              <div className="flex flex-col gap-2 max-w-[85%]">
+                {message.parts.map((part, i) => (
+                    part.type === 'text' ? (
+                      <div key={`${message.id}-${i}`} className="bg-gray-200 p-3 rounded-md text-sm prose prose-sm max-w-none">
+                        <ReactMarkdown>
+                          {part.text}
+                        </ReactMarkdown>
                       </div>
-                    )
-                }
-              })}
+                    ) : null
+                ))}
+              </div>
             </div>
           ))}
-          {/** Mark end of chat */}
+          
+     
           <div ref={messagesEndRef} />
-        </div>
-      )}
+      </div>
+
+  
       <form
-        data-loading={isLoading}
         onSubmit={(e) => handleChat(e)}
-        className="max-w-md w-full mx-auto flex-1 sticky bottom-10 flex flex-col gap-2 bg-white"
+        className="flex-none p-4 bg-white border-t z-10"
       >
-        <div className="form-control">
+        {error && <div className="text-red-500 text-xs mb-2">{error}</div>}
+        
+        <div className="flex items-end gap-2 p-2 border rounded-md bg-gray-50 focus-within:ring-1 ring-blue-500">
           <textarea
             name="message"
             placeholder="What do you want to know?"
-            className="w-full p-2 border rounded resize-none"
+           
+            className="grow bg-transparent border-none focus:ring-0 focus:outline-none resize-none max-h-32 min-h-[40px]"
+            rows={1}
             onKeyDown={handleKeyDown}
             value={input}
-            onChange={(e) => {
-              console.log(e.currentTarget.value)
-              setInput(e.currentTarget.value)
-            }}
+            onChange={(e) => setInput(e.currentTarget.value)}
           ></textarea>
-        </div>
-
-        {error && <div className="alert alert--error">{error}</div>}
-
-        <div className="flex justify-center mt-2">
-          <button type="submit" className="button button--default">
-            {isLoading ? 'Thinking...' : 'Send'}
+      
+          <button 
+            type="submit" 
+            disabled={isLoading || !input.trim()}
+            className="p-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 flex-none transition-colors"
+          >
+            {isLoading ? <span className="text-xs">...</span> : <SendHorizontal size={20}/>}
           </button>
         </div>
       </form>

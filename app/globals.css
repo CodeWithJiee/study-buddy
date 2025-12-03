@@ -1,8 +1,8 @@
 @import 'tailwindcss';
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #F9FAFF;
+  --foreground: #0d1a35;
 }
 
 @theme inline {
@@ -31,7 +31,7 @@ form {
 .button {
   @apply flex py-2 px-3 rounded transition-all ease-in-out duration-300 cursor-pointer min-h-10;
   &.button--default {
-    @apply bg-gray-200 border-gray-300 hover:bg-gray-300 hover:border-gray-500;
+    @apply bg-[#4EB2C1] border-gray-300 hover:bg-gray-300 hover:border-gray-500;
   }
 }
 
