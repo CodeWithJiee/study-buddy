@@ -12,7 +12,7 @@ export default function Home() {
       
         <div className="flex-none pt-8 px-5 text-center bg-white z-10">
           <h1 className="text-5xl font-extrabold text-[#162660] tracking-tight">Hello, Guest!</h1>
-          <p className="mt-4 text-lg text-gray-600 max-w-xl mx-auto">
+          <p className="mt-4 text-base text-gray-600 max-w-xl mx-auto">
             Welcome to i-Juander, your Study Buddy!{' '}
             <a className="font-semibold text-[#4EB2C1] hover:text-[#162660] transition-colors duration-200 cursor-pointer" href="/signup">
               Create your free account
