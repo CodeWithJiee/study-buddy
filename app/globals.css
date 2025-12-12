@@ -11,6 +11,10 @@
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
+html, body {
+  overflow: hidden !important; /* ⛔ Disable scrolling */
+  height: 100%;
+}
 
 body {
   background: var(--background);

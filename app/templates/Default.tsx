@@ -1,7 +1,8 @@
 import Header from '@/app/components/Header'
 import Footer from '@/app/components/Footer'
+import { Toaster } from 'react-hot-toast'
 
-export default function ({
+export default function Default({
   className,
   children,
 }: {
@@ -9,12 +10,13 @@ export default function ({
   children: React.ReactNode
 }) {
   return (
-    <div className="flex flex-col min-h-dvh">
+    <div className="flex flex-col min-h-dvh border">
       <Header />
-      <main className={`container mx-auto p-5 flex-1 overflow-hidden ${className}`}>
+      <main className={`container mx-auto p-5 flex-1 ${className}`}>
         {children}
       </main>
       <Footer />
+      <Toaster position="bottom-right" />
     </div>
   )
 }
